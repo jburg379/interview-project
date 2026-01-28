@@ -252,6 +252,8 @@ module "asg" {
   instance_type   = var.instance_type #This cariable has been set to t2.micro as the default to meet requirements
   security_groups = [module.application_sg.security_group_id]
 
+  user_data = base64encode(file("${path.module}/scripts/install_apache.sh"))
+
   traffic_source_attachments = {
     alb = {
       traffic_source_identifier = module.alb.target_groups["application"].arn
