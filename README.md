@@ -1,5 +1,7 @@
-## Tech Challenge
+## Intro
 
+This repository is for a 3-tier VPC architecture with multiple avilability zones built using terraform. It was designed to meet Coalfire's minimum requirements.
+Modules from terraform and Coalfire's repo were used in this project.
 
 ## Prerequisites
 
