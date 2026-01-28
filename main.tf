@@ -15,19 +15,19 @@ module "vpc" {
     azs = ["us-east-1a", "us-east-1b"] #sets the available availability zones in which to provision the subnets
     subnets = [
         {
-            tag="management",
+            custom_name="management",
             cidr="10.1.1.0/24",
             type="public",
             availability_zone="us-east-1a"
         },
         {
-            tag="application",
+            custom_name="application",
             cidr="10.1.2.0/24",
             type="private",
             availability_zone="us-east-1a"
         },
         {
-            tag="backend",
+            custom_name="backend",
             cidr="10.1.3.0/24",
             type="private",
             availability_zone="us-east-1b"
