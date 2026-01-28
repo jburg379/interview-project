@@ -8,7 +8,7 @@
 
 #This module is to configure the VPC and subnets
 module "vpc" {
-    source = "git::https://github.com/Coalfire-CF/terraform-aws-vpc-nfw.git?ref=vx.x.x" #pulling the VPC module from Coalfire's github repo
+    source = "git::https://github.com/Coalfire-CF/terraform-aws-vpc-nfw.git?ref=v3.1.0" #pulling the VPC module from Coalfire's github repo
     name = "project-vpc"
     cidr = "10.1.0.0/16"
     azs = ["us-east-1a", "us-east-1b"] #sets the available availability zones in which to provision the subnets
@@ -173,7 +173,8 @@ resource "local_file" "project_key" {
 ####################
 #Configure management subnet EC2
 module "management_ec2" {
-  source = "github.com/Coalfire-CF/terraform-aws-ec2?ref=vX.X.X" #pull Coalfire's EC2 module
+  source  = "terraform-aws-modules/ec2-instance/aws"
+  version = "5.8.0"
   name_prefix = "management"
   vpc_id = module.vpc.vpc_id
   subnet_id = module.vpc.public_subnets_map["management"]
