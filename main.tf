@@ -175,13 +175,12 @@ resource "local_file" "project_key" {
 module "management_ec2" {
   source  = "terraform-aws-modules/ec2-instance/aws"
   version = "5.8.0"
-  name_prefix = "management"
-  vpc_id = module.vpc.vpc_id
+  name = "management-instance"
   subnet_id = module.vpc.public_subnets_map["management"]
-  security_group_ids = [module.management_sg.security_group_id]
+  vpc_security_group_ids = [module.management_sg.security_group_id]
 
   ami = var.ami_id 
-  ec2_instance_type = var.instance_type #This cariable has been set to t2.micro as the default to meet requirements
+  instance_type = var.instance_type #This cariable has been set to t2.micro as the default to meet requirements
   key_name = aws_key_pair.project.key_name
 
   associate_public_ip_address = true #Auto assigns a public IP to the EC2
