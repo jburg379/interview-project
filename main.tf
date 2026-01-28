@@ -9,7 +9,8 @@
 #This module is to configure the VPC and subnets
 module "vpc" {
     source = "git::https://github.com/Coalfire-CF/terraform-aws-vpc-nfw.git?ref=v3.1.0" #pulling the VPC module from Coalfire's github repo
-    name = "project-vpc"
+    vpc_name = "project-vpc"
+    flow_log_destination_type = "cloud-watch-logs"
     cidr = "10.1.0.0/16"
     azs = ["us-east-1a", "us-east-1b"] #sets the available availability zones in which to provision the subnets
     subnets = [
@@ -62,7 +63,7 @@ resource "aws_route" "management_route" {
 #Associate the management subnet with the management route table
 resource "aws_route_table_association" "management" {
     route_table_id = aws_route_table.management_rt.id
-    subnet_id = module.vpc.public_subnets_map["management"] #Subnet ID by tag
+    subnet_id = module.vpc.public_subnets["management"] #Subnet ID by tag
 }
 
 #Private route table. This will not have internet access
@@ -135,7 +136,7 @@ module "management_sg" {
   ingress_with_cidr_blocks = [
     {
         rule = "ssh-tcp",
-        cidr_blocks = [var.custom_ip]
+        cidr_blocks = var.custom_ip
     }
   ]
 
@@ -176,7 +177,7 @@ module "management_ec2" {
   source  = "terraform-aws-modules/ec2-instance/aws"
   version = "5.8.0"
   name = "management-instance"
-  subnet_id = module.vpc.public_subnets_map["management"]
+  subnet_id = module.vpc.public_subnets["management"]
   vpc_security_group_ids = [module.management_sg.security_group_id]
 
   ami = var.ami_id 
@@ -200,7 +201,7 @@ module "alb" {
   name = "project-alb"
   load_balancer_type = "application"
   vpc_id = module.vpc.vpc_id
-  subnets = [module.vpc.public_subnets_map["management"]]
+  subnets = [module.vpc.public_subnets["management"]]
   security_groups = [module.alb_sg.security_group_id]
 
   listeners = {
