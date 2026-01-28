@@ -209,7 +209,7 @@ module "alb" {
       port     = 80
       protocol = "HTTP"
       forward = {
-        target_group_key = "app"
+        target_group_key = "application"
       }
     }
   }
@@ -219,6 +219,7 @@ module "alb" {
       port        = 80
       protocol    = "HTTP"
       target_type = "instance"
+      create_attachment = false #Prevents creating empty attachment
       health_check = {
         path                = "/"
         matcher             = "200"
@@ -253,7 +254,7 @@ module "asg" {
 
   traffic_source_attachments = {
     alb = {
-      traffic_source_identifier = module.alb.target_groups.application.arn
+      traffic_source_identifier = module.alb.target_groups["application"].arn
       traffic_source_type       = "elbv2"
     }
   }
