@@ -3,3 +3,27 @@ variable "aws_region" {
   type        = string
   default     = "us-east-1"
 }
+
+variable "custom_ip" {
+  description = "IP address to ssh to the management EC2"
+  type = string
+}
+
+variable "ami_id" {
+  description = "aws linux ami for the EC2 instances"
+  type = string
+  default = "ami-0532be01f26a3de55"
+  
+}
+
+variable "instance_type" {
+  description = "instance type for the EC2 instances"
+  type = string
+  default = "t2.micro"
+}
+
+variable "key_name" {
+  description = "key name for the aws key pair"
+  type = string
+  default = "project"
+}
