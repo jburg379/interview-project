@@ -1,3 +1,17 @@
+## Tech Challenge
+
+
+## Prerequisites
+
+Below are some of the things you will need to provision the infrastructure. The links will provide extra help and information
+
+* Terraform - this is an open source infrastructure as code software tool used to provision and manade cloud and on prem resources. [What is Terraform](https://developer.hashicorp.com/terraform/intro)
+* [How to install Terraform](https://developer.hashicorp.com/terraform/tutorials/aws-get-started/install-cli)
+* AWS Account and credentials to create resources in the us-east-1 region. (Create a AWS account) [https://aws.amazon.com/console/]
+* AWS CLI - use the AWS CLI to configure your AWS credentials. You will need you AWS access key ID and Secret Access key
+* [How to install AWS CLI](https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html)
+* [Help to connect terraform with AWS](https://dev.to/aws-builders/connecting-aws-with-terraform-a-short-guide-4bda)
+
 ## Requirements
 
 | Name | Version |
