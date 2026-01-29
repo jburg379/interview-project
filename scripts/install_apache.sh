@@ -2,8 +2,8 @@
 
 #This script is to install apache on Amazon Linux 2023
 
-dnf update -y
-dnf install -y httpd
+apt update -y
+apt install -y httpd
 
 systemctl enable httpd
 systemctl start httpd
