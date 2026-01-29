@@ -10,7 +10,7 @@ Modules from terraform and Coalfire's repo were used in this project.
 Depending on how the infrastructure will be used and the data that it stores. There are different levels of security requirements and AWS has a number of services we can use to keep our data secure.
 The infrastructure uses security groups and private subnets to add some security. Security groups work at the instance level. However, this is minimal security. Below are some ways we could increase security.
 
-* It does not have NACL (Network Access Control List) which would add extra security at the subnet level.
+* It does not have NACL (Network Access Control List) explicitly configured which would add extra security at the subnet level by adding traffic rules.
 * A WAF (Web Aplpication Firewall) could be applied to the ALB (Application Load Balancer) to help filter traffic. [What is AWS WAF?](https://aws.amazon.com/waf/)
 * AWS Shield could also be used to help protect the ALB from DDoS (Distributed Denial of Service).
 * IAM roles be created and assigned with following the principle of least privelage.
@@ -27,6 +27,17 @@ This infrastructure is configured to use 3 subnets across 2 availability zones w
 ## Cost Opptimization
 
 I tried to use as much of the free services aws provides to keep costs down. We could bring the costs down a bit by bringing down the minimum ammount of EC2 the ASG keep running from 2 to just 1 instance. There are also other instance types that could be used depending on how the infrastructure is planned to be used. There are spot instances and even dedicated instances. Spot instances offer big discounts but there are downsides like price fluctuation, complex management, and interruption risks. [What are spot instances?](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/using-spot-instances.html)
+Services like AWS Trusted Advisor can also be used to help reduce costs.
+
+## Shortcomings
+
+Below are some shortcomings in this infrastructure configuration
+
+* Currently the terraform state file will be saved localy. A backend.tf should be created and configure to store the state file on a remote service like an S3 bucket with DynamoDB for state locking.
+* The only monitoring in place is the health check on the ALB and flow logs from the VPC module. For better monitoring services like AWS CloudWatch and AWS CLoudTrail. There are a few other monitoring services listed in the previous sections.
+* Security should be improved.
+* There is service running on the backend subnet.
+* There are some module restrictions which do no allow the usage of the latest version of the AWS provider.
 
 ## Prerequisites
 
