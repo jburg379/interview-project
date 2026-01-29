@@ -16,6 +16,7 @@ The infrastructure uses security groups and private subnets to add some security
 * IAM roles be created and assigned with following the principle of least privelage.
 * Create an IAM User who will have access and enforce MFA (Multi Factor Athentication).
 * Use Amazon GuardDuty for threat detection. [What is Amazon GuardDuty?](https://docs.aws.amazon.com/guardduty/latest/ug/what-is-guardduty.html) 
+* Although currently there aren't any credentials the terraform variables should be set to sensitive = true if they hold any sensite data so it does not get stored as plain text in the state file.
 
 ## Availability
 
@@ -38,6 +39,28 @@ Below are some shortcomings in this infrastructure configuration
 * Security should be improved.
 * There is service running on the backend subnet.
 * There are some module restrictions which do no allow the usage of the latest version of the AWS provider.
+
+# Improvement Plan
+
+## List
+
+* Add a database service to the backend subnet to connect to the application subnet.
+* Add a S3 bucket with versioning enabled to store the terraform state file.
+* Set up DynamoDB for state locking in case there are multiple people working on this.
+* Add at least 1 more subnet to create another ASG in case the first one fails.
+* Add monitoring services with some lambda functions to help with management.
+* Add custom NACLs to all the subnets for better network security.
+* Remove the default values in the variables and encourage the use of terraform.tfvars file
+* Add AWS Web Application Firewall and AWS Shiled
+* Create IAM roles
+
+## Priorities
+
+* Security is always at the top of my list. I would start by configuring NACLs, adding the WAF, AWS Shiled, and creating and assigning IAM roles to all the services.
+* Set up the monitoring services for both security and computing performance.
+* Set up the S3 bucket and DynamoDB to store and lock the terraform state file.
+* Remove terraform variables' default values
+* Add a database to the backend subnet with a security group and set it to be able to communicate with the application subnet.
 
 ## Prerequisites
 
