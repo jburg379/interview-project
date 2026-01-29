@@ -31,56 +31,16 @@ module "vpc" {
       cidr              = "10.1.3.0/24",
       type              = "private",
       availability_zone = "us-east-1b"
+    },
+    {
+      custom_name       = "extra",
+      cidr              = "10.1.4.0/24",
+      type              = "public",
+      availability_zone = "us-east-1b"
     }
   ]
 
   enable_nat_gateway = false #the NAT gateway is set to false to disable instances on a private subnet from connecting to the internet
-}
-
-####################
-
-#IGW and Routing
-
-####################
-
-#Internet gateway for the public subnet
-resource "aws_internet_gateway" "igw" {
-  vpc_id = module.vpc.vpc_id
-}
-
-#Public route table for the management subnet
-resource "aws_route_table" "management_rt" {
-  vpc_id = module.vpc.vpc_id
-}
-
-#Route for the management subnet to the IGW
-resource "aws_route" "management_route" {
-  route_table_id         = aws_route_table.management_rt.id
-  destination_cidr_block = "0.0.0.0/0"
-  gateway_id             = aws_internet_gateway.igw.id
-}
-
-#Associate the management subnet with the management route table
-resource "aws_route_table_association" "management" {
-  route_table_id = aws_route_table.management_rt.id
-  subnet_id      = module.vpc.public_subnets["management"] #Subnet ID by tag
-}
-
-#Private route table. This will not have internet access
-resource "aws_route_table" "private" {
-  vpc_id = module.vpc.vpc_id
-}
-
-#Associate the Application subnet with the private route table
-resource "aws_route_table_association" "application" {
-  route_table_id = aws_route_table.private.id
-  subnet_id      = module.vpc.private_subnets["application"]
-}
-
-#Associate the Backend subnet with the private route table
-resource "aws_route_table_association" "backend" {
-  route_table_id = aws_route_table.private.id
-  subnet_id      = module.vpc.private_subnets["backend"]
 }
 
 ####################
@@ -201,8 +161,10 @@ module "alb" {
   name               = "project-alb"
   load_balancer_type = "application"
   vpc_id             = module.vpc.vpc_id
-  subnets            = [module.vpc.public_subnets["management"]]
+  subnets            = [module.vpc.public_subnets["management"], module.vpc.public_subnets["extra"]]
   security_groups    = [module.alb_sg.security_group_id]
+
+  enable_deletion_protection = false
 
   listeners = {
     http = {
@@ -259,5 +221,16 @@ module "asg" {
       traffic_source_identifier = module.alb.target_groups["application"].arn
       traffic_source_type       = "elbv2"
     }
+  }
+
+  create_iam_instance_profile = true
+  iam_role_name               = "project-asg"
+  iam_role_path               = "/ec2/"
+  iam_role_description        = "IAM role for the ASG"
+  iam_role_tags = {
+    CustomIamRole = "Yes"
+  }
+  iam_role_policies = {
+    AmazonSSMManagedInstanceCore = "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore"
   }
 }
