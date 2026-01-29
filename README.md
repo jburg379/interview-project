@@ -11,26 +11,30 @@ Depending on how the infrastructure will be used and the data that it stores. Th
 The infrastructure uses security groups and private subnets to add some security. Security groups work at the instance level. However, this is minimal security. Below are some ways we could increase security.
 
 * It does not have NACL (Network Access Control List) which would add extra security at the subnet level.
-* A WAF (Web Aplpication Firewall) could be applied to the ALB (Application Load Balancer) to help filter traffic. [What is AWS WAF](https://aws.amazon.com/waf/)
+* A WAF (Web Aplpication Firewall) could be applied to the ALB (Application Load Balancer) to help filter traffic. [What is AWS WAF?](https://aws.amazon.com/waf/)
 * AWS Shield could also be used to help protect the ALB from DDoS (Distributed Denial of Service).
 * IAM roles be created and assigned with following the principle of least privelage.
 * Create an IAM User who will have access and enforce MFA (Multi Factor Athentication).
-* Use Amazon GuardDuty for threat detection. [What is Amazon GuardDuty](https://docs.aws.amazon.com/guardduty/latest/ug/what-is-guardduty.html) 
+* Use Amazon GuardDuty for threat detection. [What is Amazon GuardDuty?](https://docs.aws.amazon.com/guardduty/latest/ug/what-is-guardduty.html) 
 
 ## Availability
 
 This infrastructure is configured to use 3 subnets across 2 availability zones with an auto scalling group (ASG) which will keep 2 EC2 instances running as a minimum. A health check has been added to the ALB to help maintain EC2s available. There is a few things that could help increase availability. 
 
 * The ammount of subnets could be increased to have an extra application subnet.
-* If this is hosting a web application then CloudFront could be used for content delivery using edge locations. [What is CloudFront](https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/Introduction.html)
+* If this is hosting a web application then CloudFront could be used for content delivery using edge locations. [What is CloudFront?](https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/Introduction.html)
+
+## Cost Opptimization
+
+I tried to use as much of the free services aws provides to keep costs down. We could bring the costs down a bit by bringing down the minimum ammount of EC2 the ASG keep running from 2 to just 1 instance. There are also other instance types that could be used depending on how the infrastructure is planned to be used. There are spot instances and even dedicated instances. Spot instances offer big discounts but there are downsides like price fluctuation, complex management, and interruption risks. [What are spot instances?](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/using-spot-instances.html)
 
 ## Prerequisites
 
 Below are some of the things you will need to provision the infrastructure. The links will provide extra help and information
 
-* Terraform - this is an open source infrastructure as code software tool used to provision and manade cloud and on prem resources. [What is Terraform](https://developer.hashicorp.com/terraform/intro)
+* Terraform - this is an open source infrastructure as code software tool used to provision and manade cloud and on prem resources. [What is Terraform?](https://developer.hashicorp.com/terraform/intro)
 * [How to install Terraform](https://developer.hashicorp.com/terraform/tutorials/aws-get-started/install-cli)
-* AWS Account and credentials to create resources in the us-east-1 region. (Create a AWS account) [https://aws.amazon.com/console/]
+* AWS Account and credentials to create resources in the us-east-1 region. [Create a AWS account](https://aws.amazon.com/console/)
 * AWS CLI - use the AWS CLI to configure your AWS credentials. You will need you AWS access key ID and Secret Access key
 * [How to install AWS CLI](https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html)
 * [Help to connect terraform with AWS](https://dev.to/aws-builders/connecting-aws-with-terraform-a-short-guide-4bda)
