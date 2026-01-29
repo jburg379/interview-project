@@ -3,6 +3,21 @@
 This repository is for a 3-tier VPC architecture with multiple avilability zones built using terraform. It was designed to meet Coalfire's minimum requirements.
 Modules from terraform and Coalfire's repo were used in this project.
 
+## Analysis
+
+# Security
+
+Depending on how the infrastructure will be used and the data that it stores. There are different levels of security requirements and AWS has a number of services we can use to keep our data secure.
+The infrastructure uses security groups and private subnets to add some security. Security groups work at the instance level. However, this is minimal security. Below are some ways we could increase security.
+
+* It does not have NACL (Network Access Control List) which would add extra security at the subnet level.
+* A WAF (Web Aplpication Firewall) could be applied to the ALB (Application Load Balancer) to help filter traffic [What is AWS WAF](https://aws.amazon.com/waf/)
+* AWS Shield could also be used to help protect the ALB from DDoS (Distributed Denial of Service)
+* IAM roles be created and assigned with following the principle of least privelage
+* Create an IAM User who will have access and enforce MFA (Multi Factor Athentication)
+* Use Amazon GuardDuty for threat detection [What is Amazon GuardDuty](https://docs.aws.amazon.com/guardduty/latest/ug/what-is-guardduty.html) 
+
+
 ## Prerequisites
 
 Below are some of the things you will need to provision the infrastructure. The links will provide extra help and information
