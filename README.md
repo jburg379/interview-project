@@ -101,6 +101,8 @@ Below are some shortcomings in this infrastructure configuration
 
 # Evidence of successful deployment
 
+![Alt text](Terraform_apply_screenshot.png)
+
 ## Prerequisites
 
 Below are some of the things you will need to provision the infrastructure. The links will provide extra help and information.
