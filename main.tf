@@ -216,6 +216,8 @@ module "asg" {
 
   user_data = base64encode(file("${path.module}/scripts/install_apache.sh"))
 
+  key_name      = aws_key_pair.project.key_name
+
   traffic_source_attachments = {
     alb = {
       traffic_source_identifier = module.alb.target_groups["application"].arn
