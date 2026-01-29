@@ -97,7 +97,13 @@ Below are some shortcomings in this infrastructure configuration
 * The person deploying this might have never installed terraform or git.
 * A different team will probably configure the IP that will have access to the EC2 on the management subnet.
 
+# Diagram
 
+![Alt text](VPC-project.drawio.png)
+
+# Evidence of successful deployment
+
+![Alt text](Terraform_apply_screenshot.png)
 
 ## Prerequisites
 
