@@ -12,7 +12,7 @@ variable "custom_ip" {
 variable "ami_id" {
   description = "aws linux ami for the EC2 instances"
   type = string
-  default = "ami-0532be01f26a3de55"
+  default = "ami-0b6c6ebed2801a5cb"
   
 }
 
